@@ -1,0 +1,83 @@
+vdpau_hw_hevc - a sample VDPAU H.265/HEVC video player
+José Hiram Soltren <jsoltren@nvidia.com>
+05 June 2015
+
+vdpau_hw_hevc demonstrates how to parse an H.265/HEVC elementary bitstream,
+store client side state, and hand off frame data to VDPAU for hardware
+accelerated decoding.
+
+The program is designed to demonstrate correct programming of the VDPAU API
+for the H.265/HEVC format. It is not a fully featured video player.
+
+vdpau_hw_hevc utilizes a patched version of gstreamer's H.265/HEVC bitstream
+parsing code. In particular, patches are necessary to correctly calculate
+the NumShortTermPictureSliceHeaderBits and NumLongTermPictureSliceHeaderBits
+fields in VdpPictureInfoHEVC. Please consult the comments in libvdpau's
+vdpau.h for additional information.
+
+DEPENDENCIES
+
+libvdpau 1.0 or later, available from:
+https://wiki.freedesktop.org/www/Software/VDPAU/
+
+gstreamer 0.10 or later
+
+libxml2
+
+X11 development files
+
+This package contains code from the gstreamer project. These files are
+identical to the correspinding files in gstreamer commit
+d99e621533b73a6839de0faa991737b7e84676f2:
+
+  gstbitreader.c  gstbytereader.c
+  gstbitreader.h  gstbytereader.h
+
+These files are derived from the corresponding files in gst-plugins-bad
+commit 7eef9dd0adb1daaada97490bc01c6b05ba973315:
+
+  gsth265parser.c gsth265parser.h
+  nalutils.c      nalutils.h
+
+BUILDING
+
+Typing "make" in this directory should generate the vdpau_hw_hevc binary.
+
+RUNNING
+
+To run, do:
+
+$ ./vdpau_hw_hevc path/to/stream.bin
+
+Sample content is available from multiple sources, such as:
+
+http://fate-suite.ffmpeg.org/hevc-conformance/
+
+OPTIONS
+
+vdpau_hw_hevc has a number of options. See the arguments to main() in main.c
+for a complete list of features.
+
+Without any additional arguments, vdpau_hw_hevc will open a bitstream,
+play it once in decode order, and exit.
+
+KNOWN ISSUES
+
+The call to VdpDecoderCreate will fail at run time, unless vdpau_hw_hevc is
+executed on a system that offers both libvdpau 1.0 or later and a VDPAU
+implementation supporting H.265/HEVC playback.
+
+KNOWN LIMITATIONS
+
+vdpau_hw_hevc will only play H.265/HEVC elementary streams using the bitstream
+format described in the H.265/HEVC specification. Any other formats must be
+demuxed externally prior to attempting playback with vdpau_hw_hevc.
+
+As it does not contain a demuxer, vdpau_hw_hevc has no facilities for audio
+playback.
+
+Seeking is not supported.
+
+vdpau_hw_hevc will only play streams in decode, not display, order as of this
+writing. A correct video player must present frames in display order.
+

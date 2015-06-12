@@ -1,0 +1,3 @@
+[submodule "vdpau-win-x11"]
+	path = vdpau-win-x11
+	url = https://github.com/NVIDIA/vdpau-win-x11.git
