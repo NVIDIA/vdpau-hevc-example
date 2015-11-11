@@ -1602,23 +1602,9 @@ static void DisplayFrame(
 
     /*
 
-       XXX HACK XXX
-
-       NVIDIA VDPAU assumes that PICTURE_STRUCTURE_FRAME has a top field
-       and a bottom field that need to be merged into one. We only set
-       PICTURE_STRUCTURE_TOP_FIELD to prevent NVIDIA VDPAU from merging
-       fields which results in incorrect output.
-       PICTURE_STRUCTURE_BOTTOM_FIELD would work equally well here.
-
-       Part of the issue is that the VdpVideoMixer has no concept of which
-       video codec is in use. NVIDIA VDPAU HEVC decoding does not have any
-       concept of top and bottom field since the HEVC specification itself
-       does not. All video decoding results in progressive frames according
-       to the Specification.
-
-       An alternate to this hack is ignoring current_picture_structure
-       entirely within the VDPAU implementation for HEVC decoding. This is
-       easier for now.
+       VDPAU implementations must allow VDP_VIDEO_MIXER_PICTURE_STRUCTURE_FRAME
+       to work correctly here. Players should not need to use a hack here by
+       declaring this frame to be a top or bottom field.
 
        For VDPAU HEVC decoding, video_surface_past and video_surface_future
        should be NULL for progressive frames. Presentation of interlaced
@@ -1632,7 +1618,7 @@ static void DisplayFrame(
                  VDP_INVALID_HANDLE, /* background_surface */
                  0, /* background_source_rect */
                  /* current_picture_structure*/
-                 VDP_VIDEO_MIXER_PICTURE_STRUCTURE_TOP_FIELD,
+                 VDP_VIDEO_MIXER_PICTURE_STRUCTURE_FRAME,
                  0, /* video_surface_past_count */
                  NULL, /* video_surface_past */
                  pi->RefPics[target_index], /* video_surface_current */
