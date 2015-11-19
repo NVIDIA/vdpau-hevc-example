@@ -737,7 +737,7 @@ static void generate_unavailable_reference_picture(
 )
 {
     /* TODO - Compatibility with different chroma types. */
-    VdpYCbCrFormat format = VDP_CHROMA_TYPE_420;
+    VdpYCbCrFormat format = VDP_YCBCR_FORMAT_NV12;
     uint32_t width = pi->pic_width_in_luma_samples;
     uint32_t height = pi->pic_height_in_luma_samples;
     uint8_t *luma_data = NULL, *chroma_data = NULL;
