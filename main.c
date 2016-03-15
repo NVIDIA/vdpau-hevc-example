@@ -480,57 +480,59 @@ static int update_picture_info_sps(
     pi->sps_max_dec_pic_buffering_minus1 =
         sps->max_dec_pic_buffering_minus1[0];
 
-    if(sps->scaling_list_data_present_flag)
+    /* 
+     * SPS Scaling Lists
+     *
+     * gstreamer takes care of initializing a default scaling list, or
+     * patching it if sps->scaling_list_data_present_flag is set.
+     */
+
+    for(i=0; i<6; i++)
     {
-        /* Scaling Lists */
-
-        for(i=0; i<6; i++)
+        for(j=0; j<16; j++)
         {
-            for(j=0; j<16; j++)
-            {
-                pi->ScalingList4x4[i][j] =
-                    sps->scaling_list.scaling_lists_4x4[i][j];
-            }
+            pi->ScalingList4x4[i][j] =
+                sps->scaling_list.scaling_lists_4x4[i][j];
         }
+    }
 
-        for(i=0; i<6; i++)
+    for(i=0; i<6; i++)
+    {
+        for(j=0; j<64; j++)
         {
-            for(j=0; j<64; j++)
-            {
-                pi->ScalingList8x8[i][j] =
-                    sps->scaling_list.scaling_lists_8x8[i][j];
-            }
+            pi->ScalingList8x8[i][j] =
+                sps->scaling_list.scaling_lists_8x8[i][j];
         }
+    }
 
-        for(i=0; i<6; i++)
+    for(i=0; i<6; i++)
+    {
+        for(j=0; j<64; j++)
         {
-            for(j=0; j<64; j++)
-            {
-                pi->ScalingList16x16[i][j] =
-                    sps->scaling_list.scaling_lists_16x16[i][j];
-            }
+            pi->ScalingList16x16[i][j] =
+                sps->scaling_list.scaling_lists_16x16[i][j];
         }
+    }
 
-        for(i=0; i<2; i++)
+    for(i=0; i<2; i++)
+    {
+        for(j=0; j<64; j++)
         {
-            for(j=0; j<64; j++)
-            {
-                pi->ScalingList32x32[i][j] =
-                    sps->scaling_list.scaling_lists_32x32[i][j];
-            }
+            pi->ScalingList32x32[i][j] =
+                sps->scaling_list.scaling_lists_32x32[i][j];
         }
+    }
 
-        for(i=0; i<6; i++)
-        {
-            pi->ScalingListDCCoeff16x16[i] =
-                sps->scaling_list.scaling_list_dc_coef_minus8_16x16[i] + 8;
-        }
+    for(i=0; i<6; i++)
+    {
+        pi->ScalingListDCCoeff16x16[i] =
+            sps->scaling_list.scaling_list_dc_coef_minus8_16x16[i] + 8;
+    }
 
-        for(i=0; i<2; i++)
-        {
-            pi->ScalingListDCCoeff32x32[i] =
-                sps->scaling_list.scaling_list_dc_coef_minus8_32x32[i] + 8;
-        }
+    for(i=0; i<2; i++)
+    {
+        pi->ScalingListDCCoeff32x32[i] =
+            sps->scaling_list.scaling_list_dc_coef_minus8_32x32[i] + 8;
     }
 
     return 0;
@@ -602,57 +604,59 @@ static int update_picture_info_pps(
         pi->row_height_minus1[i] = pps->row_height_minus1[i];
     }
 
-    if(pps->scaling_list_data_present_flag)
+    /* 
+     * PPS Scaling Lists
+     *
+     * gstreamer takes care of initializing a default scaling list, or
+     * patching it if pps->scaling_list_data_present_flag is set.
+     */
+
+    for(i=0; i<6; i++)
     {
-        /* Scaling Lists */
-
-        for(i=0; i<6; i++)
+        for(j=0; j<16; j++)
         {
-            for(j=0; j<16; j++)
-            {
-                pi->ScalingList4x4[i][j] =
-                    pps->scaling_list.scaling_lists_4x4[i][j];
-            }
+            pi->ScalingList4x4[i][j] =
+                pps->scaling_list.scaling_lists_4x4[i][j];
         }
+    }
 
-        for(i=0; i<6; i++)
+    for(i=0; i<6; i++)
+    {
+        for(j=0; j<64; j++)
         {
-            for(j=0; j<64; j++)
-            {
-                pi->ScalingList8x8[i][j] =
-                    pps->scaling_list.scaling_lists_8x8[i][j];
-            }
+            pi->ScalingList8x8[i][j] =
+                pps->scaling_list.scaling_lists_8x8[i][j];
         }
+    }
 
-        for(i=0; i<6; i++)
+    for(i=0; i<6; i++)
+    {
+        for(j=0; j<64; j++)
         {
-            for(j=0; j<64; j++)
-            {
-                pi->ScalingList16x16[i][j] =
-                    pps->scaling_list.scaling_lists_16x16[i][j];
-            }
+            pi->ScalingList16x16[i][j] =
+                pps->scaling_list.scaling_lists_16x16[i][j];
         }
+    }
 
-        for(i=0; i<2; i++)
+    for(i=0; i<2; i++)
+    {
+        for(j=0; j<64; j++)
         {
-            for(j=0; j<64; j++)
-            {
-                pi->ScalingList32x32[i][j] =
-                    pps->scaling_list.scaling_lists_32x32[i][j];
-            }
+            pi->ScalingList32x32[i][j] =
+                pps->scaling_list.scaling_lists_32x32[i][j];
         }
+    }
 
-        for(i=0; i<6; i++)
-        {
-            pi->ScalingListDCCoeff16x16[i] =
-                pps->scaling_list.scaling_list_dc_coef_minus8_16x16[i] + 8;
-        }
+    for(i=0; i<6; i++)
+    {
+        pi->ScalingListDCCoeff16x16[i] =
+            pps->scaling_list.scaling_list_dc_coef_minus8_16x16[i] + 8;
+    }
 
-        for(i=0; i<2; i++)
-        {
-            pi->ScalingListDCCoeff32x32[i] =
-                pps->scaling_list.scaling_list_dc_coef_minus8_32x32[i] + 8;
-        }
+    for(i=0; i<2; i++)
+    {
+        pi->ScalingListDCCoeff32x32[i] =
+            pps->scaling_list.scaling_list_dc_coef_minus8_32x32[i] + 8;
     }
 
     return 0;
